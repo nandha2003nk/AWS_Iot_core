@@ -1,0 +1,34 @@
+
+cmake_minimum_required(VERSION 3.20)
+
+project(AWS_IOT_C LANGUAGES C)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+find_path(PAHO_INCLUDE_DIR
+    MQTTAsync.h
+    PATHS "C:/msys64/ucrt64/include"
+    REQUIRED
+)
+
+find_library(PAHO_MQTT_LIBRARY
+    NAMES paho-mqtt3as
+    PATHS "C:/msys64/ucrt64/lib"
+    NO_DEFAULT_PATH
+    REQUIRED
+)
+
+add_executable(aws_iot_app
+    src/main.c
+    src/mqtt_client.c
+)
+
+target_include_directories(aws_iot_app PRIVATE
+    include
+    ${PAHO_INCLUDE_DIR}
+)
+
+target_link_libraries(aws_iot_app PRIVATE
+    ${PAHO_MQTT_LIBRARY}
+)
